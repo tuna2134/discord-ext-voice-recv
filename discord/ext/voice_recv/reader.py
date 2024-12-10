@@ -188,10 +188,11 @@ class PacketDecryptor:
         except AttributeError as e:
             raise NotImplementedError(mode) from e
 
-        self.box: nacl.secret.SecretBox = nacl.secret.SecretBox(bytes(secret_key))
+        
+        self.box: nacl.secret.Aead = nacl.secret.Aead(bytes(secret_key))
 
     def update_secret_key(self, secret_key: bytes) -> None:
-        self.box = nacl.secret.SecretBox(bytes(secret_key))
+        self.box: nacl.secret.Aead = nacl.secret.Aead(bytes(secret_key))
 
     def _decrypt_rtp_xsalsa20_poly1305(self, packet: RTPPacket) -> bytes:
         nonce = bytearray(24)
